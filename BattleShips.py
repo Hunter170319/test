@@ -63,8 +63,8 @@ class Board:
         self.field = [['O'] * size for _ in range(size)]
         self.busy = []
         self.ships = []
-        self.last_hit = []      # список точек, раненого корабля
-        self.count_destr_ships = 0      # счетчик уничтоженных кораблей
+        self.last_hit = [] 
+        self.count_destr_ships = 0
 
     def __str__(self):
         res = '  | ' + ' | '.join(map(str, range(1, self.size + 1))) + ' |'
@@ -97,7 +97,7 @@ class Board:
         self.ships.append(ship)
         self.contour(ship)
 
-    def shot(self, d: Dot) -> bool:    #возвращает True, если нужно ход переходить
+    def shot(self, d: Dot) -> bool:
         if d in self.busy:
             raise BoardUsedException()
         if self.out(d):
@@ -140,7 +140,7 @@ class Player:
     def ask(self):
         raise NotImplementedError()
 
-    def move(self) -> bool:    #возвращает True, если нужно ход повторить
+    def move(self) -> bool:
         while True:
             try:
                 target = self.ask()
@@ -155,7 +155,7 @@ class AI(Player):
     def ask(self) -> Dot:
         last = self.enemy.last_hit
         while True:
-            if last:    # добивание раненого корабля
+            if last:
                 if len(last) == 1:
                     near = ((0, 1), (0, -1), (1, 0), (-1, 0))
                 else:
@@ -169,7 +169,7 @@ class AI(Player):
                 d = Dot(randint(0, 5), randint(0, 5))
             if d not in self.enemy.busy and not self.enemy.out(d):
                 break
-        sleep(0.1 * randint(15, 50))    # имитация "мыслительной работы" компьютера
+        sleep(0.1 * randint(15, 50))
         print(f'Ход компьютера: {d.x + 1} {d.y + 1}')
         return d
 
@@ -234,7 +234,7 @@ class Game:
         print(' y - номер столбца ')
         print('-------------------')
 
-    def print_boards(self):  # вывод двух досок рядом по горизонтали
+    def print_boards(self):
         print('-' * self.size * 10)
         print('Ваша доска:'.ljust((self.size + 1) * 4 - 1) + ' ' * self.size + 'Доска компьютера:')
         for s1, s2 in zip(self.pl.board.__str__().split('\n'), self.ai.board.__str__().split('\n')):
